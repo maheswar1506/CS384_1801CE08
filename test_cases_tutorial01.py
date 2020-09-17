@@ -1,6 +1,6 @@
 import tutorial01 as A1
 
-actual_answers = [9, 12,201,14.5,0,1,-253.8,-610.352,-0.002,[-2, -3.0, -4.5, -6.75, -10.125],[-2, -3.0, -4.5, -6.75, -10.125],[-2, -0.5, 1.0, 2.5, 4.0],[-2, -0.5, 1.0, 2.5, 4.0]
+actual_answers = [9, 12,201,14.5,0,1,-253.8,-610.352,-0.002,[-2, -3.0, -4.5, -6.75, -10.125],[-2, -3.0, -4.5, -6.75, -10.125],[-2, -0.5, 1.0, 2.5, 4.0],[-2, -0.5, 1.0, 2.5, 4.0],[-0.5, -2.0, 1.0, 0.4, 0.25],[0]
 ,[2, 6, 18, 54, 162]]
 student_answers = []
 
@@ -72,6 +72,22 @@ n = 5.0 #float number of n gives result 0
 ap2 = A1.printAP(a,d,n)
 ap2 = list(ap2)
 student_answers.append(ap2)
+
+#for hp
+
+a = -2
+d = 1.5
+n = 5.0
+hp1 = A1.printHP(a,d,n)
+hp1 = list(hp1)
+student_answers.append(hp1)
+
+a = 5
+d = -1
+n = 10 #float number of n gives result 0
+hp2 = A1.printHP(a,d,n)
+hp2 = list(hp2)
+student_answers.append(hp2)
 
 ################################################################################################
 
