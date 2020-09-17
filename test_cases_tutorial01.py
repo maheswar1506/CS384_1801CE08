@@ -1,6 +1,6 @@
 import tutorial01 as A1
 
-actual_answers = [9, 12,201,14.5,0,1,-253.8]
+actual_answers = [9, 12,201,14.5,0,1,-253.8,-610.352,-0.002]
 student_answers = []
 
 test_case_1 = A1.add(4, 5)
@@ -23,6 +23,27 @@ student_answers.append(test_case_6)
 
 test_case_7 = A1.multiply(-4.7, 54)
 student_answers.append(test_case_7)
+
+
+
+################################################################################################
+
+# power
+
+num1 = -2.5
+num2 = 7
+result = A1.power(num1,num2)
+student_answers.append(result)
+
+num1 = -2.5
+num2 = -7
+result = A1.power(num1,num2)
+student_answers.append(result)
+
+
+
+################################################################################################
+
 
 print(actual_answers)
 print(student_answers)
