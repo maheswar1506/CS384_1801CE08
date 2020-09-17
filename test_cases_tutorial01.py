@@ -1,6 +1,7 @@
 import tutorial01 as A1
 
-actual_answers = [9, 12,201,14.5,0,1,-253.8,-610.352,-0.002]
+actual_answers = [9, 12,201,14.5,0,1,-253.8,-610.352,-0.002,[-2, -3.0, -4.5, -6.75, -10.125],[-2, -3.0, -4.5, -6.75, -10.125]
+,[2, 6, 18, 54, 162]]
 student_answers = []
 
 test_case_1 = A1.add(4, 5)
@@ -40,11 +41,38 @@ num2 = -7
 result = A1.power(num1,num2)
 student_answers.append(result)
 
+# for gp 
+
+a = -2
+r = 1.5
+n = 5
+gp1 = A1.printGP(a,r,n)
+gp1 = list(gp1)
+student_answers.append(gp1)
+
+a = -2
+r = 1.5
+n = 5.0 #float number of n gives result 0
+gp2 = A1.printGP(a,r,n)
+gp2 = list(gp2)
+student_answers.append(gp2)
+
 
 
 ################################################################################################
 
+# Driver code 
 
+a = 2 # starting number 
+r = 3 # Common ratio 
+n = 5 # N th term to be find 
+
+gp = A1.printGP(a, r, n) 
+gp = list(gp) 
+student_answers.append(gp)
+
+
+print(gp)
 print(actual_answers)
 print(student_answers)
 
