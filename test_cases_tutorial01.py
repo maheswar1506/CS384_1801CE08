@@ -1,6 +1,6 @@
 import tutorial01 as A1
 
-actual_answers = [9, 12,201,14.5,0,1,-253.8,-610.352,-0.002,[-2, -3.0, -4.5, -6.75, -10.125],[-2, -3.0, -4.5, -6.75, -10.125]
+actual_answers = [9, 12,201,14.5,0,1,-253.8,-610.352,-0.002,[-2, -3.0, -4.5, -6.75, -10.125],[-2, -3.0, -4.5, -6.75, -10.125],[-2, -0.5, 1.0, 2.5, 4.0],[-2, -0.5, 1.0, 2.5, 4.0]
 ,[2, 6, 18, 54, 162]]
 student_answers = []
 
@@ -57,7 +57,21 @@ gp2 = A1.printGP(a,r,n)
 gp2 = list(gp2)
 student_answers.append(gp2)
 
+#for ap
 
+a = -2
+d = 1.5
+n = 5
+ap1 = A1.printAP(a,d,n)
+ap1 = list(ap1)
+student_answers.append(ap1)
+
+a = -2
+d = 1.5
+n = 5.0 #float number of n gives result 0
+ap2 = A1.printAP(a,d,n)
+ap2 = list(ap2)
+student_answers.append(ap2)
 
 ################################################################################################
 
