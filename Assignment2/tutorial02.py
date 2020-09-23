@@ -76,6 +76,20 @@ def mse(first_list, second_list):
 # Function to compute mae. You cant use Python functions
 def mae(first_list, second_list):
     # mae Logic
+    xy_list = list()
+    if len(first_list) == len(second_list):
+        for i in range(len(first_list)):
+            if isinstance(first_list[i],(int,float)) and isinstance(second_list[i],(int,float)):
+                xy_list.append(abs(first_list[i]-second_list[i]))
+            else:
+                return 0
+    else:
+        return 0
+    mae_value = 0
+    if len(first_list)>0:
+        mae_value = summation(xy_list)/len(first_list)
+    else:
+        return 0
     return mae_value
 
 
