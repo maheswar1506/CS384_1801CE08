@@ -4,8 +4,18 @@ from math import sqrt
 # Function to compute mean
 def mean(first_list):
     # mean Logic 
+    summation_value = 0
+    for item in first_list:
+        if isinstance(item,(int,float)):
+            summation_value = summation_value+item
+        else:
+            return 0
+    mean_value = 0
+    if len(first_list)>0:
+        mean_value = summation_value/len(first_list)
+    else:
+        return 0
     return mean_value
-
 
 # Function to compute median. You cant use Python functions
 def median(first_list):
