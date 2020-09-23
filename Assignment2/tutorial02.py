@@ -107,6 +107,30 @@ def nse(first_list, second_list):
 # Function to compute Pearson correlation coefficient. You cant use Python functions
 def pcc(first_list, second_list):
     # nse Logic
+    x_mean = mean(first_list)
+    y_mean = mean(second_list)
+    num = list()
+    xx2_list = list()
+    yy2_list = list()
+    if len(first_list) == len(second_list):
+        for i in range(len(first_list)):
+            if isinstance(first_list[i],(int,float)) and isinstance(second_list[i],(int,float)):
+                num.append((first_list[i]-x_mean)*(second_list[i]-y_mean))
+                xx2_list.append((first_list[i]-x_mean)**2)
+                yy2_list.append((second_list[i]-y_mean)**2)
+            else:
+                return 0
+
+    else:
+        return 0
+    num_sum = summation(num)
+    xx2_sum = summation(xx2_list)
+    yy2_sum = summation(yy2_list)
+    pcc_value = 0
+    if xx2_sum==0 or yy2_sum==0:
+        return 0
+    else:
+        pcc_value = num_sum/(sqrt(xx2_sum)*sqrt(yy2_sum))
     return pcc_value
 
 
