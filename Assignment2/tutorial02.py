@@ -38,6 +38,17 @@ def variance(first_list):
 # Function to compute RMSE. You cant use Python functions
 def rmse(first_list, second_list):
     # RMSE Logic
+    for item in first_list:
+        if isinstance(item,(int,float)):
+            pass
+        else:
+            return 0
+    for item in second_list:
+        if isinstance(item,(int,float)):
+            pass
+        else:
+            return 0
+    rmse_value = sqrt(mse(first_list,second_list))
     return rmse_value
 
 
