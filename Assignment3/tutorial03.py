@@ -267,7 +267,111 @@ def gender():
 
 def dob():
     # Read csv and process
-    pass
+    # removing folders
+    if(os.path.exists("./analytics")):
+        shutil.rmtree("./analytics")
+    else:
+        pass
+    with open('studentinfo_cs384.csv') as f:
+        reader = csv.DictReader(f)
+        lines = [dict(row) for row in reader]
+
+    if(os.path.exists("./analytics/dob")):
+        pass
+    else:
+        os.makedirs("./analytics/dob")
+
+    base_path = "./analytics/dob"
+    for row in lines:
+        if(row["dob"] != ""):
+            dinfo = row["dob"]
+            if((datetime.datetime.strptime(dinfo,"%d-%m-%Y") >= datetime.datetime.strptime("01-01-1995","%d-%m-%Y")) and (datetime.datetime.strptime(dinfo,"%d-%m-%Y") <= datetime.datetime.strptime("31-12-1999","%d-%m-%Y"))):
+                if(os.path.exists(os.path.join(base_path,"bday_1995_1999.csv"))):
+                    with open(os.path.join(base_path,"bday_1995_1999.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writerow(row)
+                else:
+                    with open(os.path.join(base_path,"bday_1995_1999.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writeheader()
+                        writer.writerow(row)
+            elif((datetime.datetime.strptime(dinfo,"%d-%m-%Y") >= datetime.datetime.strptime("01-01-2000","%d-%m-%Y")) and (datetime.datetime.strptime(dinfo,"%d-%m-%Y") <= datetime.datetime.strptime("31-12-2004","%d-%m-%Y"))):
+                if(os.path.exists(os.path.join(base_path,"bday_2000_2004.csv"))):
+                    with open(os.path.join(base_path,"bday_2000_2004.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writerow(row)
+                else:
+                    with open(os.path.join(base_path,"bday_2000_2004.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writeheader()
+                        writer.writerow(row)
+            elif((datetime.datetime.strptime(dinfo,"%d-%m-%Y") >= datetime.datetime.strptime("01-01-2005","%d-%m-%Y")) and (datetime.datetime.strptime(dinfo,"%d-%m-%Y") <= datetime.datetime.strptime("31-12-2009","%d-%m-%Y"))):
+                if(os.path.exists(os.path.join(base_path,"bday_2005_2009.csv"))):
+                    with open(os.path.join(base_path,"bday_2005_2009.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writerow(row)
+                else:
+                    with open(os.path.join(base_path,"bday_2005_2009.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writeheader()
+                        writer.writerow(row)
+            elif((datetime.datetime.strptime(dinfo,"%d-%m-%Y") >= datetime.datetime.strptime("01-01-2010","%d-%m-%Y")) and (datetime.datetime.strptime(dinfo,"%d-%m-%Y") <= datetime.datetime.strptime("31-12-2014","%d-%m-%Y"))):
+                if(os.path.exists(os.path.join(base_path,"bday_2010_2014.csv"))):
+                    with open(os.path.join(base_path,"bday_2010_2014.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writerow(row)
+                else:
+                    with open(os.path.join(base_path,"bday_2010_2014.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writeheader()
+                        writer.writerow(row)
+            elif((datetime.datetime.strptime(dinfo,"%d-%m-%Y") >= datetime.datetime.strptime("01-01-2015","%d-%m-%Y")) and (datetime.datetime.strptime(dinfo,"%d-%m-%Y") <= datetime.datetime.strptime("31-12-2020","%d-%m-%Y"))):
+                if(os.path.exists(os.path.join(base_path,"bday_2015_2020.csv"))):
+                    with open(os.path.join(base_path,"bday_2015_2020.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writerow(row)
+                else:
+                    with open(os.path.join(base_path,"bday_2015_2020.csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writeheader()
+                        writer.writerow(row)
+            else:
+                ginfo = "misc"
+                if(os.path.exists(os.path.join(base_path,sinfo.lower()+".csv"))):
+                    with open(os.path.join(base_path,sinfo.lower()+".csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writerow(row)
+                else:
+                    with open(os.path.join(base_path,sinfo.lower()+".csv"),"a+") as file:
+                        header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                        writer = csv.DictWriter(file,fieldnames=header)
+                        writer.writeheader()
+                        writer.writerow(row)
+        else:
+            ginfo = "misc"
+            if(os.path.exists(os.path.join(base_path,sinfo.lower()+".csv"))):
+                with open(os.path.join(base_path,sinfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writerow(row)
+            else:
+                with open(os.path.join(base_path,sinfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writeheader()
+                    writer.writerow(row)
+
 
 
 def state():
