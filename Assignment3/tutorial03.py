@@ -400,7 +400,44 @@ def state():
 
 def blood_group():
     # Read csv and process
-    pass
+    with open('studentinfo_cs384.csv') as f:
+        reader = csv.DictReader(f)
+        lines = [dict(row) for row in reader]
+
+    if(os.path.exists("./analytics/blood_group")):
+        pass
+    else:
+        os.makedirs("./analytics/blood_group")
+
+    base_path = "./analytics/blood_group"
+    for row in lines:
+        if(row["blood_group"] != ""):
+            binfo = row["blood_group"]
+            if(os.path.exists(os.path.join(base_path,binfo.lower()+".csv"))):
+                with open(os.path.join(base_path,binfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writerow(row)
+            else:
+                with open(os.path.join(base_path,binfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writeheader()
+                    writer.writerow(row)
+        else:
+            ginfo = "misc"
+            if(os.path.exists(os.path.join(base_path,binfo.lower()+".csv"))):
+                with open(os.path.join(base_path,binfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writerow(row)
+            else:
+                with open(os.path.join(base_path,binfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writeheader()
+                    writer.writerow(row)
+
 
 
 # Create the new file here and also sort it in this function only.
