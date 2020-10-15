@@ -359,7 +359,43 @@ def dob():
 
 def state():
     # Read csv and process
-    pass
+    with open('studentinfo_cs384.csv') as f:
+        reader = csv.DictReader(f)
+        lines = [dict(row) for row in reader]
+
+    if(os.path.exists("./analytics/state")):
+        pass
+    else:
+        os.makedirs("./analytics/state")
+
+    base_path = "./analytics/state"
+    for row in lines:
+        if(row["state"] != ""):
+            sinfo = row["state"]
+            if(os.path.exists(os.path.join(base_path,sinfo.lower()+".csv"))):
+                with open(os.path.join(base_path,sinfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writerow(row)
+            else:
+                with open(os.path.join(base_path,sinfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writeheader()
+                    writer.writerow(row)
+        else:
+            ginfo = "misc"
+            if(os.path.exists(os.path.join(base_path,sinfo.lower()+".csv"))):
+                with open(os.path.join(base_path,sinfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writerow(row)
+            else:
+                with open(os.path.join(base_path,sinfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writeheader()
+                    writer.writerow(row)
 
 
 def blood_group():
