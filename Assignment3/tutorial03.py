@@ -215,7 +215,43 @@ def email_domain_extract():
 
 def gender():
     # Read csv and process
-    pass
+    with open('studentinfo_cs384.csv') as f:
+        reader = csv.DictReader(f)
+        lines = [dict(row) for row in reader]
+
+    if(os.path.exists("./analytics/gender")):
+        pass
+    else:
+        os.makedirs("./analytics/gender")
+
+    base_path = "./analytics/gender"
+    for row in lines:
+        if(row["gender"] != ""):
+            ginfo = row["gender"]
+            if(os.path.exists(os.path.join(base_path,ginfo.lower()+".csv"))):
+                with open(os.path.join(base_path,ginfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writerow(row)
+            else:
+                with open(os.path.join(base_path,ginfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writeheader()
+                    writer.writerow(row)
+        else:
+            ginfo = "misc"
+            if(os.path.exists(os.path.join(base_path,ginfo.lower()+".csv"))):
+                with open(os.path.join(base_path,ginfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writerow(row)
+            else:
+                with open(os.path.join(base_path,ginfo.lower()+".csv"),"a+") as file:
+                    header = ["id","full_name","country","email","gender","dob","blood_group","state"]
+                    writer = csv.DictWriter(file,fieldnames=header)
+                    writer.writeheader()
+
 
 
 def dob():
