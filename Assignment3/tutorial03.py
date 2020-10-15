@@ -471,4 +471,65 @@ def blood_group():
 # Create the new file here and also sort it in this function only.
 def new_file_sort():
     # Read csv and process
-    pass
+    #creating new file
+    # removing folders
+    if(os.path.exists("./analytics")):
+        shutil.rmtree("./analytics")
+    else:
+        pass
+    with open('studentinfo_cs384.csv') as f:
+        reader = csv.DictReader(f)
+        lines = [dict(row) for row in reader]
+    headers = ["id", "first_name", "last_name", "country", "email", "gender", "dob", "blood_group", "state"]
+
+    if(os.path.exists("./analytics")):
+        pass
+    else:
+        os.makedirs("./analytics")
+
+    base_path = "./analytics"
+    filename = "studentinfo_cs384_names_split.csv"
+    for row in lines:
+        temp = row["full_name"].split()
+        row["first_name"] = temp[0]
+        temp = temp[1:]
+        row["last_name"] = " ".join(temp)
+        row.pop("full_name",None)
+        if(os.path.exists(os.path.join(base_path,filename))):
+            with open(os.path.join(base_path,filename),"a+") as file:
+                writer = csv.DictWriter(file,fieldnames=headers)
+                writer.writerow(row)
+        else:
+            with open(os.path.join(base_path,filename),"a+") as file:
+                writer = csv.DictWriter(file,fieldnames=headers)
+                writer.writeheader()
+                writer.writerow(row)
+
+    #sorting
+
+    with open(os.path.join("./analytics","studentinfo_cs384_names_split.csv")) as f:
+        reader = csv.DictReader(f)
+        lines = [dict(row) for row in reader]
+    headers = ["id", "first_name", "last_name", "country", "email", "gender", "dob", "blood_group", "state"]
+
+    if(os.path.exists("./analytics")):
+        pass
+    else:
+        os.makedirs("./analytics")
+
+    base_path = "./analytics"
+    filename = "studentinfo_cs384_names_split_sorted_first_name.csv"
+
+    lines = sorted(lines,key=lambda temp: temp["first_name"])
+
+    for row in lines:
+        if(os.path.exists(os.path.join(base_path,filename))):
+            with open(os.path.join(base_path,filename),"a+") as file:
+                writer = csv.DictWriter(file,fieldnames=headers)
+                writer.writerow(row)
+        else:
+            with open(os.path.join(base_path,filename),"a+") as file:
+                writer = csv.DictWriter(file,fieldnames=headers)
+                writer.writeheader()
+                writer.writerow(row)
+
