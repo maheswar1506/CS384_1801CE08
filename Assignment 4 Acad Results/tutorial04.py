@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd 
 import os,shutil
 
-
+# spi calculation
 
 def spi(credits, grades):
     gra = {"AA":10, "AB":9, "BB":8, "BC":7, "CC":6, "CD":5, "DD":4, "F":0, "I":0}
@@ -12,11 +12,15 @@ def spi(credits, grades):
 
     return round((weighted_sum/sum(credits)),2)
 
+# cpi calculation
+
 def cpi(credits,spi_li):
     weighted_sum = 0
     for x,y in zip(credits,spi_li):
         weighted_sum += (x*y)
     return round((weighted_sum/sum(credits)),2)
+
+# Deleting previously created grades folder
 
 def del_previous_grades_folder():
     if os.path.exists("./grades"):
@@ -24,7 +28,6 @@ def del_previous_grades_folder():
     else:
         pass
 
-#deleting previously created grades folder
 
 del_previous_grades_folder()
 
