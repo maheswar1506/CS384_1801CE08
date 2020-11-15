@@ -72,7 +72,7 @@ def rename_Sherlock(folder_name):
             season_num = str(int(season_num))
             episode_num = list_of_all_numbers_in_filename[1]
             episode_num = str(int(episode_num))
-            newname = series_name + " - Season " + season_num.zfill(episode_pad) + " - " + "Episode " + episode_num.zfill(episode_pad) + "." + extension
+            newname = series_name + " - Season " + season_num.zfill(episode_pad) + " Episode " + episode_num.zfill(episode_pad) + "." + extension
             os.rename(os.path.join(folder_path, file), os.path.join(folder_path,newname))
     except:
         pass
