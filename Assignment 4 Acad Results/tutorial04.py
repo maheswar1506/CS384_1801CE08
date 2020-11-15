@@ -2,6 +2,10 @@ import numpy as np
 import pandas as pd 
 import os,shutil
 
+# Name : G Maheswar Reddy
+# Roll : 1801CE08
+
+
 # spi calculation
 
 def spi(credits, grades):
