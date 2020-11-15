@@ -150,7 +150,7 @@ def rename_How_I_Met_Your_Mother(folder_name):
     except:
         pass
 
-    
+ 
 #folder_inp = input()
 
 #folder_inp = "FIR"
@@ -165,5 +165,5 @@ def rename_How_I_Met_Your_Mother(folder_name):
 #folder_inp = "Suits"
 #rename_Suits(folder_inp)
 
-folder_inp = "How I Met Your Mother"
-rename_How_I_Met_Your_Mother(folder_inp)
+#folder_inp = "How I Met Your Mother"
+#rename_How_I_Met_Your_Mother(folder_inp)
