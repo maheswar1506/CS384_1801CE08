@@ -3,16 +3,13 @@ import numpy as np
 import pandas as pd
 from operator import itemgetter
 
-if os.path.exists("./groups"):
-    shutil.rmtree("./groups")
-
 def group_allocation(filename, number_of_groups):
     # Entire Logic 
     # You can add more functions, but in the test case, we will only call the group_allocation() method,
     if os.path.exists("./groups"):
-        pass
-    else:
-        os.makedirs("./groups")
+    	shutil.rmtree("./groups")
+
+    os.makedirs("./groups")
     basepath = "./groups"
 
     df = pd.read_csv(filename)
