@@ -29,6 +29,7 @@ def group_allocation(filename, number_of_groups):
     strength = pd.DataFrame(strength, columns=["BRANCH_CODE", "STRENGTH"])
     strength.to_csv(os.path.join(basepath, "branch_strength.csv"), mode="a+", index=False)
 
+    # branch files
     branch_df = pd.read_csv(os.path.join(basepath, "branch_strength.csv"))
     branch_copy = list(branch_df["BRANCH_CODE"])
     for branch in branch_copy:
@@ -37,6 +38,7 @@ def group_allocation(filename, number_of_groups):
         data = data.sort_values(by="Roll")
         data.to_csv(os.path.join(basepath,file), mode="a+", index=False)
 
+    # Group files
     branch_dict = {code: strgh for code, strgh in zip(list(branch_df["BRANCH_CODE"]), list(branch_df["STRENGTH"]))}
     group_dict = {branch : {"Group_G{}.csv".format(str(i).zfill(2)) : math.floor(branch_dict[branch]/number_of_groups) for i in range(1, number_of_groups+1)} for branch in branch_dict.keys()}
     left_dict = {code: strgh%number_of_groups for code, strgh in zip(list(branch_df["BRANCH_CODE"]), list(branch_df["STRENGTH"]))}
@@ -61,6 +63,7 @@ def group_allocation(filename, number_of_groups):
                 grp_files_df[code].iloc[:grp_val].to_csv(os.path.join(basepath, grp), mode="a+", index=False)
                 grp_files_df[code] = grp_files_df[code].iloc[grp_val:]   
 
+    # stats file
     temp_dict = {"Group_G{}.csv".format(str(i).zfill(2)) : 0 for i in range(1, number_of_groups+1)}
     for code, code_val in stats_dict.items():
         for grp, grp_val in code_val.items():
