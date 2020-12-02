@@ -18,6 +18,8 @@ class Notepad:
     helpmenu = Menu(menubar, tearoff=0)
     # scroll bar
     scroll = Scrollbar(textarea)
+    #lnlabel = Label(root, width=2, bg='antique white')
+    #lnlabel.grid(side=LEFT, anchor='nw', fill=Y)
     file = None
 
     def __init__(self):
@@ -261,27 +263,28 @@ class Notepad:
             '{} strings of {} are replaced with {}'.format(count, find_var, replace_var))
 
     def word_count(self):
-        f = open(self.file, 'r')
-        text_string = f.read()
-        word_list = text_string.split(' ')
+        text_string = self.textarea.get("1.0", END)
+        word_list = text_string.split()
         ans = "The number of words present in this file are: " + \
             str(len(word_list))
         showinfo("Word count of the text in this file", ans)
-        f.close()
 
     def char_count(self):
-        f = open(self.file, 'r')
-        text_string = f.read()
-        ans = "The number of characters, including spaces and new lines, present in this file are: " + \
-            str(len(text_string)-1)
+        text_string = self.textarea.get("1.0", END)
+        char_count_in_file = 0
+        for curr_str in text_string.split('\n'):
+            char_count_in_file += len(curr_str)
+        ans = "The number of characters, including spaces, present in this file are: " + \
+            str(char_count_in_file)
         showinfo("Character count of the file", ans)
-        f.close()
 
     def created_time(self):
+        self.saveFile()
         created_time = time.ctime(os.path.getctime(self.file))
         showinfo("Created time of this file", created_time)
 
     def modified_time(self):
+        self.saveFile()
         modified_time = time.ctime(os.path.getmtime(self.file))
         showinfo("Modified time of this file", modified_time)
 
