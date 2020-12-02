@@ -1,16 +1,11 @@
-import tutorial05 A5
+import tutorial05 as A5
 
-# folder_inp = "FIR"
-# A5.rename_FIR(folder_inp)
+A5.rename_FIR("FIR", 3, 3)
 
-# folder_inp = "Game of Thrones"
-# A5.rename_Game_of_Thrones(folder_inp)
+A5.rename_Game_of_Thrones("Game of Thrones", 3, 3)
 
-# folder_inp = "Sherlock"
-# A5.rename_Sherlock(folder_inp)
+A5.rename_Sherlock("Sherlock", 3, 3)
 
-# folder_inp = "Suits"
-# A5.rename_Suits(folder_inp)
+A5.rename_Suits("Suits", 3, 3)
 
-# folder_inp = "How I Met Your Mother"
-# A5.rename_How_I_Met_Your_Mother(folder_inp)
+A5.rename_How_I_Met_Your_Mother("How I Met Your Mother", 3, 3)

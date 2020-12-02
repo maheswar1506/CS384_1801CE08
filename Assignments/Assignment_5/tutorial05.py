@@ -1,8 +1,8 @@
 import os,re
 
-def rename_FIR(folder_name):
-    season_pad = int(input())
-    episode_pad = int(input())
+def rename_FIR(folder_name, ep_padding, season_padding):
+    season_pad = int(season_padding)
+    episode_pad = int(ep_padding)
     basepath = "./Subtitles"
     folder_path = os.path.join(basepath, folder_name)
     files = os.listdir(folder_path)
@@ -19,9 +19,9 @@ def rename_FIR(folder_name):
         except:
             os.remove(os.path.join(basepath,folder_name,file))
 
-def rename_Game_of_Thrones(folder_name):
-    season_pad = int(input())
-    episode_pad = int(input())
+def rename_Game_of_Thrones(folder_name, ep_padding, season_padding):
+    season_pad = int(season_padding)
+    episode_pad = int(ep_padding)
     basepath = "./Subtitles"
     folder_path = os.path.join(basepath, folder_name)
     files = os.listdir(folder_path)
@@ -56,9 +56,9 @@ def rename_Game_of_Thrones(folder_name):
             os.remove(os.path.join(basepath,folder_name,file))
 
 
-def rename_Sherlock(folder_name):
-    season_pad = int(input())
-    episode_pad = int(input())
+def rename_Sherlock(folder_name, ep_padding, season_padding):
+    season_pad = int(season_padding)
+    episode_pad = int(ep_padding)
     basepath = "./Subtitles"
     folder_path = os.path.join(basepath, folder_name)
     files = os.listdir(folder_path)
@@ -78,9 +78,9 @@ def rename_Sherlock(folder_name):
             os.remove(os.path.join(basepath,folder_name,file))
 
 
-def rename_Suits(folder_name):
-    season_pad = int(input())
-    episode_pad = int(input())
+def rename_Suits(folder_name, ep_padding, season_padding):
+    season_pad = int(season_padding)
+    episode_pad = int(ep_padding)
     basepath = "./Subtitles"
     folder_path = os.path.join(basepath, folder_name)
     files = os.listdir(folder_path)
@@ -114,9 +114,9 @@ def rename_Suits(folder_name):
         except:
             os.remove(os.path.join(basepath,folder_name,file))
 
-def rename_How_I_Met_Your_Mother(folder_name):
-    season_pad = int(input())
-    episode_pad = int(input())
+def rename_How_I_Met_Your_Mother(folder_name, ep_padding, season_padding):
+    season_pad = int(season_padding)
+    episode_pad = int(ep_padding)
     basepath = "./Subtitles"
     folder_path = os.path.join(basepath, folder_name)
     files = os.listdir(folder_path)
@@ -150,20 +150,3 @@ def rename_How_I_Met_Your_Mother(folder_name):
         except:
             os.remove(os.path.join(basepath,folder_name,file))
 
- 
-#folder_inp = input()
-
-#folder_inp = "FIR"
-#rename_FIR(folder_inp)
-
-#folder_inp = "Game of Thrones"
-#rename_Game_of_Thrones(folder_inp)
-
-#folder_inp = "Sherlock"
-#rename_Sherlock(folder_inp)
-
-#folder_inp = "Suits"
-#rename_Suits(folder_inp)
-
-#folder_inp = "How I Met Your Mother"
-#rename_How_I_Met_Your_Mother(folder_inp)
