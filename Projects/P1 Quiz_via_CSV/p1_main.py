@@ -52,13 +52,27 @@ def export_db():
         temp_df = temp[temp["quiz_num"] == qu]
         temp_df.to_csv(os.path.join(basepath,filename),mode="a+",index=False)
 
+def update_check():
+    global user_roll, quiz_num
+    temp_con = sqlite3.connect('project1_quiz_cs384.db')
+    temp_cur = temp_con.cursor()
+    temp_cur.execute("SELECT * FROM marks")
+    vals = temp_cur.fetchall()
+    for val in vals:
+        if (user_roll in val) and (quiz_num in val):
+            return True
+    return False
 
 def db_entry():
     global user_roll, quiz_num, total_score
     temp_con = sqlite3.connect('project1_quiz_cs384.db')
     temp_cur = temp_con.cursor()
-    temp_cur.execute("INSERT INTO marks(roll, quiz_num, total_marks) VALUES (?,?,?);", (user_roll, quiz_num, str(total_score)))
-    temp_con.commit()
+    if update_check():
+        temp_cur.execute("UPDATE marks SET total_marks=(?) WHERE roll=(?) AND quiz_num=(?)",(str(total_score),user_roll,quiz_num))
+        temp_con.commit()
+    else:
+        temp_cur.execute("INSERT INTO marks(roll, quiz_num, total_marks) VALUES (?,?,?);", (user_roll, quiz_num, str(total_score)))
+        temp_con.commit()
 
 def individual():
     global user_roll, df, quiz_name, total_score, user_choices, row_length, attempted,correct, wrong
