@@ -1,0 +1,11 @@
+ques_no,question,option1,option2,option3,option4,correct_option,marks_correct_ans,marks_wrong_ans,compulsory,time=20m
+1,4 + 2 =,2,4,5,6,4,4,-1,y,
+2,What is capital of India,mumbai,chennai,kolkata,delhi,4,4,-1,n,
+3,Preferred searching algo for sorted array,linear search,binary search,both ,none,2,4,-1,n,
+4,4 - 5 =,1,0,-1,2,3,4,-1,y,
+5,Which one of the following fields of an IP header is NOT modified by a typical IP router?,Checksum,Source Address,Time to live,Length,2,4,-2,y,
+6,A file is organized so that the ordering of data records is the same as or close to the ordering of data entries in some index. Then that index is called,Dense,Sparse,Clustered,Unclustered,3,4,-2,y,
+7,The height of a tree is the length of the longest root-to-leaf path in it. The maximum and minimum number of nodes in a binary tree of height 5 are,63 and 6,64 and 5,32 and 6,31 and 5,1,4,-2,y,
+8,Which one of the following is True at any valid state in shift-reduce parsing?,Viable prefixes appear only at the bottom of the stack and not inside,Viable prefixes appear only at the top of the stack and not inside,The stack contains only a set of viable prefixes,The stack never contains viable prefixes,3,4,-2,y,
+9,Suppose you break a stick of unit length at a point chosen uniformly at random. Then the expected length of the shorter stick is,0.24 to 0.27,0.15 to 0.3,0.2 to 0.3,0.1 to 0.15,1,4,-2,y,
+10,8 - 7 =,1,4,-1,15,1,4,-1,y,

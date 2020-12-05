@@ -251,6 +251,8 @@ def show_quiz():
 
 
 def login():
+    print("\n")
+    print("#"*25, "Login", "#"*25)
     user = input("Enter your Name : ")
     password = hashing(input("Enter your Password : "))
     try:
@@ -269,6 +271,7 @@ def login():
 def register():
     global con 
     global cur
+    print("#"*25, "Register", "#"*25)
     user = input("Name : ")
     roll = input("Roll : ")
     password = hashing(input("Password : "))

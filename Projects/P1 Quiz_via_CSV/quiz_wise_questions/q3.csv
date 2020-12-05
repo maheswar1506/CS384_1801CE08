@@ -1,0 +1,11 @@
+ques_no,question,option1,option2,option3,option4,correct_option,marks_correct_ans,marks_wrong_ans,compulsory,time=20m
+1,IF (z + 1/z)2 = 98 compute (z2 + 1/z2),96,99,100,98,1,4,-1,y,
+2,When a point inside of a tetrahedron (a solid with four triangular surfaces) is connected by straight lines to its corners how many (new) internal planes are created with these lines?,6,8,4,10,1,4,-1,n,
+3,The value of the dot product of the eigenvectors corresponding to any pair of different eigenvalues of a 4-by-4 symmetric positive definite matrix is,0,1,-1,2,1,4,-1,y,
+4,The base (or radix) of the number system such that the equation 312/20 = 13.1 holds is,3,4,5,6,3,4,-1,n,
+5,Let G be a graph with n vertices and m edges. What is the tightest upper bound on the running time on Depth First Search of G? Assume that the graph is represented using adjacency matrix.,O(n),O(m+n),O(n2),O(mn),3,4,-1,y,
+6,Which one of the following is FALSE?,A basic block is a sequence of instructions where control enters the sequence at the beginning and exits at the end,Available expression analysis can be used for common subexpression elimination.,Live variable analysis can be used for dead code elimination.,x = 4 ? 5 => x = 20 is an example of common subexpression elimination.,4,4,-1,n,
+7,Which one of the following is FALSE?,User level threads are not scheduled by the kernel.,"When a user level thread is blocked, all other threads of its process are blocked.",Context switching between user level threads is faster than context switching between kernel level threads.,Kernel level threads cannot share the code segment,4,4,-1,y,
+8,Let L be a language and L' be its complement. Which one of the following is NOT a viable possibility?,Neither L nor L' is recursively enumerable,Both L and L' are r.e. but not recursive.,One of L and L' is r.e. but not recursive; the other is not r.e.,Both L and L' are recursive,2,4,-1,n,
+9,The minimum number of comparisons required to find the minimum and the maximum of 100 numbers is ,148,147,146,140,1,4,-1,y,
+10,The function f(x) = x sinx satisfies the following equation f''(x) + f(x) + t cosx = 0. The value of t is,-1,-2,1,2,2,4,-1,n,
