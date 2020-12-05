@@ -5,207 +5,297 @@ import keyboard
 import time
 import hashlib
 import numpy as np 
-import pandas as pd 
+import pandas as pd
+import tkinter as tk 
 import keyboard as kb
+import threading as th 
 import multiprocessing as mp
-import tkinter as tk
-from tkinter import messagebox
+import warnings
+warnings.filterwarnings("ignore")
 
 
+# Database
 
-if(os.path.exists("./users.db")):
-    os.remove("./users.db")
+if(os.path.exists("./project1_quiz_cs384.db")):
+    os.remove("./project1_quiz_cs384.db")
 else:
     pass
+
+
+def db_entry():
+    global user_roll, quiz_num, total_score
+    temp_con = sqlite3.connect('project1_quiz_cs384.db')
+    temp_cur = temp_con.cursor()
+    temp_cur.execute("INSERT INTO marks(roll, quiz_num, total_marks) VALUES (?,?,?);", (user_roll, quiz_num, str(total_score)))
+    temp_con.commit()
+
+def individual():
+    global user_roll, df, quiz_name, total_score, user_choices, row_length, attempted,correct, wrong
+    basepath = "./individual_responses"
+    filename = quiz_name + "_" + user_roll+".csv"
+    temp = df.copy()
+    li= pd.DataFrame({"marked_choice":[user_choices]})
+    l1 = pd.DataFrame({"Total":[correct, wrong,(row_length-attempted),total_score, temp["marks_correct_ans"].sum()]})
+    l2 = pd.DataFrame({"Legend":["Correct Choices", "Wrong Choices", "Unattempted","Marks Obtained", "Total Quiz Marks"]})
+    temp = pd.concat([temp, li, l1, l2], axis=1)
+    temp.to_csv(os.path.join(basepath, filename), mode="a+", index=False)
+
+
+def add_user(username, roll, password, whatsapp):
+    global con 
+    global cur
+    cur.execute("SELECT * FROM users WHERE username=(?);", (username,))
+    check = cur.fetchone()
+    print(check)
+    if check is not None:
+        print("Username {} already exists !!!".format(username))
+    else:
+        cur.execute("INSERT INTO users (username, roll, password, whatsapp) VALUES (?,?,?,?);", (username, roll, password, whatsapp))
+        print("{} is added.".format(username))
+    con.commit()
+
+
+
+def login_check(roll, password):
+    global con 
+    global cur
+    cur.execute("SELECT username,password FROM users WHERE roll=(?);", (roll,))
+    check = cur.fetchone()
+    if check is not None:
+        if password == check[1]:
+            print("welcome {}".format(check[0]))
+        else:
+            print("Incorrect Password !!!")
+    else:
+        print("{} is not found in database".format(username))
+
+
+def display_and_get_ans():
+    global tm, root, timing, q_a, quiz_num, quiz_name, df, user_name, user_roll, user_choices
+    global row_length, ques_no, unat_ques, total_score, attempted, correct, wrong, submit
+    submit = False 
+    attempted = 0
+    correct = 0
+    wrong = 0
+    total_score = 0
+    user_choices = [-1 for i in range(row_length)]
+    user_marks = list()
+
+
+    while tm>0 and ques_no<row_length:
+        row = df.loc[ques_no]
+        print("\n")
+        print("Roll: {}".format(user_roll))
+        print("Username: {}".format(user_name))
+        print("Unattempted Questions: press Ctrl + Alt + U")
+        print("Goto Question: press Ctrl + Alt + G")
+        print("Final Submit: press Ctrl + Alt + F")
+        print("Export Database into CSV:: press Ctrl + Alt + E")
+        print("Question {}) {}".format(row["ques_no"], row["question"]))
+        print("Option 1) {}".format(row["option1"]))
+        print("Option 2) {}".format(row["option2"]))
+        print("Option 3) {}".format(row["option3"]))
+        print("Option 4) {}".format(row["option4"]))
+        print("\n")
+        print("Credits if Correct Option: {}".format(row["marks_correct_ans"]))
+        print("Negative Marking: {}".format(row["marks_wrong_ans"]))
+        comp = ""
+        if row["compulsory"] == "y":
+            comp = "Yes"
+        elif row["compulsory"] == "n":
+            comp = "No"
+        print("Is Compulsory: ".format(comp))
+        print("\n")
+        print("Enter your choice as per given choices : ")
+        choice = input("Enter Choice: 1, 2, 3, 4, S : ")
+        choice = choice.lower()
+        if submit:
+            break
+        user_choices[ques_no] = choice
+        ques_no = ques_no +1
+
+
+    try :
+        timing.terminate()
+    except Exception as e:
+        print(e)
+    for i in range(row_length):
+        row = df.loc[i]
+        if user_choices[i] == "s":
+            if row["compulsory"] == "y":
+                total_score = total_score - row["marks_wrong_ans"]
+                wrong = wrong +1
+                attempted = attempted +1
+            else:
+                pass
+        elif (int(row["correct_option"])) == int(user_choices[i]):
+            total_score = total_score + int(row["marks_correct_ans"])
+            attempted = attempted +1
+            correct = correct +1
+        else:
+            attempted = attempted+1
+            wrong = wrong+1
+    db_entry()
+    individual()
+
+
+def clear():
+    if os.name == "nt":
+        command = "cls"
+    else:
+        command = "clear"
+    os.system(command)
+
+def timer():
+    global tm, time_label, root
+    while tm>0:
+        time.sleep(1)
+        time_label.destroy()
+        mins,secs=(tm//60,tm%60)
+        st = str(mins)+':'+str(secs)
+        l1 = tk.Label(root,text=st)
+        l1.place(x=50,y=20, width=50, height=70)
+        root.update()
+        tm-=1
+    root.destroy()
+
 
 
 def hashing(password):
     return hashlib.sha512(password.encode()).hexdigest()
 
 
-LARGE_FONT= ("Verdana", 12)
+def show_quiz():
+    global quiz_num, quiz_name, df, user_name, user_roll, user_choices, user_ans, user_marks, row_length, ques_no, unat_ques
+    files = os.listdir("./quiz_wise_questions")
+    quiz_list = list()
+    row_list = list()
+    print("select quiz")
+    for file in files:
+        quiz_list.append(file.split(".")[0])
+    print(*quiz_list)
+    print("\n")
+    quiz_name = input("Enter the quiz name : ")
+    if quiz_name not in quiz_list:
+        pass
+        #sys.exit("Invalid Quiz Name")
+    quiz_num = quiz_name[1:]
+    filename = quiz_name + ".csv"
+    df = pd.read_csv(os.path.join("./quiz_wise_questions", filename))
+
+    row_length = len(list(df["ques_no"]))
+    unat_ques = 0
+    ques_no = 0
+
+    # time
+
+    global tm
+    global root
+    global time_label
+    tm = df.columns[-1].split("=")[-1]
+    tm = int(tm[0:-1])
+    root = tk.Tk()
+    root.resizable(False, False)
+    root["bg"] = "thistle3"
+    root.title("Quiz Timer !!!")
+    root.geometry("200x150")
+    tk.Label(root, text="Timer : ", bg="thistle3", fg="red4").place(x=10, y=20, width=50, height=70)
+    time_label = tk.Label(root, text=str(tm), bg="thistle3", fg="red4")
+    time_label.place(x=50,y=20, width=50, height=70)
+    global timing
+    global q_a
+    try:
+        timing = mp.Process(target=timer)
+        q_a =  th.Thread(target=display_and_get_ans)
+        timing.start()
+        q_a.start()
+        timing.join()
+        q_a.join()
+    except:
+        pass
+    root.mainloop()
 
 
-class main(tk.Tk):
-
-    def __init__(self, *args, **kwargs):
-        
-        tk.Tk.__init__(self, *args, **kwargs)
-
-        #****** DataBase *******
-        # Table 1
-        global con
-        global cur
-        con = sqlite3.connect("users.db")
-        cur = con.cursor()
-        cur.execute("""CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL,
-            roll TEXT NOT NULL,
-            password TEXT NOT NULL,
-            whatsapp INTEGER NOT NULL)""")
-
-        # Table 2
-        sql_query_for_table_2 = "CREATE TABLE marks (id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,roll TEXT NOT NULL,"
-        files = os.listdir("./quiz_wise_questions")
-        files = [file.split(".")[0]+" REAL" for file in files]
-        sql_query_for_table_2 = sql_query_for_table_2 + ",".join(files) + ",total REAL)"
-        cur.execute(sql_query_for_table_2)
-
-        details = [("Maheswar Reddy", "1801CE08", "pass123", 8790708058),
-                    ("Rohit Bheema", "1801EE24", "hello123", 8553428938),
-                    ("Santosh Kumar Reddy", "1801CS32", "Password", 9848752725)]
-
-#        for user_detail in details:
-#            add_user(*user_detail)
-
-        container = tk.Frame(self)
-
-        container.pack(side="top", fill="both", expand = True)
-
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
-
-        self.frames = {}
-
-        for F in (start_page, login_page, reg_page, display_quiz ,display_ques):
-
-            frame = F(container, self)
-
-            self.frames[F] = frame
-
-            frame.grid(row=0, column=0, sticky="nsew")
-
-        self.show_frame(start_page)
-
-    def show_frame(self, cont):
-
-        frame = self.frames[cont]
-        frame.tkraise()
+def always_display(name, roll):
+    #print("Timer : ", program_dict["timer"])
+    print("Roll : ", roll)
+    print("Name : ", name)
+    print("Unattempted Questions : ")
+    print("Goto Question : Press Ctrl + Alt + G")
+    print("Final Submit : Press Ctrl + Alt + F")
+    print("Export Database into CSV : Press Ctrl + Alt + E")
 
 
-        
-class start_page(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self,parent)
-        main_frame = tk.Frame(self, bg="orange red")
-        main_frame.place(relx=0.5, rely=0.5, width=850, height=550, anchor="center")
-
-        login_btn = tk.Button(self, text="Login",bg="RoyalBlue2", bd=0, cursor="hand2", command=lambda: controller.show_frame(login_page)).place(relx=0.4, rely=0.4, width=100, height=50)      
-        reg_btn = tk.Button(self, text="Register",bg="RoyalBlue2", bd=0, cursor="hand2", command=lambda: controller.show_frame(reg_page)).place(relx=0.4, rely=0.5, width=100, height=50)
+def login():
+    user = input("Enter your Name : ")
+    password = hashing(input("Enter your Password : "))
+    try:
+        login_check(user, password)
+        global user_name, user_roll
+        cur.execute("SELECT username,roll FROM users WHERE roll=(?);", (user,))
+        detail = cur.fetchone()
+        user_roll = detail[1]
+        user_name = detail[0]
+        show_quiz()
+    except Exception as e:
+        print(e)
 
 
 
+def register():
+    global con 
+    global cur
+    user = input("Name : ")
+    roll = input("Roll : ")
+    password = hashing(input("Password : "))
+    whatsapp = input("Whatsapp Number : ")
+    try:
+        add_user(user, roll, password, whatsapp)
+    except Exception as e:
+        print(e)
+        print("Invalid Registration")
+    else:
+        print("{} completed registration successfuly".format(user))
+        login()
 
-class login_page(tk.Frame):
 
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self,parent, width=850, height=550, bg="skyblue")
-        tk.Label(self, text="Login", bg="deepskyblue", font=50, fg="red4").place(relx=0, rely=0, relwidth=1, height=50)
-        tk.Label(self, text="Username", font=50, bg="skyblue", fg="red4",anchor="w").place(relx=0.05, rely=0.25, relwidth=1, height=25)
-        self.text_user = tk.Entry(self, font=("times new roman", 15))
-        self.text_user.place(relx=0.05, rely=0.35, width=250, height=30)
-        tk.Label(self, text="Password", font=50, bg="skyblue", fg="red4",anchor="w").place(relx=0.05, rely=0.45, relwidth=1, height=25)
-        self.text_paswd = tk.Entry(self, font=("times new roman", 15))
-        self.text_paswd.place(relx=0.05, rely=0.55, width=250, height=30)
-        log_in = tk.Button(self, text="Login", bg="dark green", fg="white", command=lambda: self.login_check(controller, self.text_user.get(), hashing(self.text_paswd.get()))).place(relx=0.05, rely=0.7, width=100, height=25)
+if __name__ == '__main__':
 
-    def login_check(self, controller, roll, password):
-        cur.execute("SELECT username,password FROM users WHERE roll=(?);", (roll,))
-        check = cur.fetchone()
-        if check is not None:
-            if password == check[1]:
-                tk.messagebox.showinfo("welcome {}".format(check[0]))
-                program_dict["username"] = check[0]
-                controller.show_frame(display_quiz)
-            else:
-                tk.messagebox.showerror("Error", "Incorrect Password !!!")
+    # Table 1
+    global con 
+    global cur
+    con = sqlite3.connect("./project1_quiz_cs384.db")
+    cur = con.cursor()
+    cur.execute("""CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL,
+        roll TEXT NOT NULL,
+        password TEXT NOT NULL,
+        whatsapp INTEGER NOT NULL)""")
+    con.commit()
+    # Table 2
+    sql_query_for_table_2 = "CREATE TABLE  marks (id INTEGER PRIMARY KEY AUTOINCREMENT,roll TEXT NOT NULL, quiz_num REAL, total_marks REAL)"
+    cur.execute(sql_query_for_table_2)
+
+    con.commit()
+    clear()
+
+    print("Register")
+    print("Login")
+    user_inp = input("Enter to Register/Login : ")
+    user_inp = user_inp.lower()
+
+    try:
+        if user_inp == "login":
+            login()
+        elif user_inp == "register":
+            register()
+            pass
+            #sys.exit("Please Login to take Quiz !!!")
         else:
-            tl.messagebox.showerror("Error", "{} is not found in database".format(username))
-
-class reg_page(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, width=850, height=550, bg="thistle3")
-        tk.Label(self, text="Registration", bg="steel blue", font=50, fg="red4").place(relx=0, rely=0, relwidth=1, height=50)
-        tk.Label(self, text="Name", font=50, fg="red4", bg="thistle3", anchor="w").place(relx=0.05, rely=0.15, relwidth=1, height=25)
-        self.text_name = tk.Entry(self, font=("times new roman", 15))
-        self.text_name.place(relx=0.05, rely=0.2, width=250, height=30)
-        tk.Label(self, text="Roll", font=50, fg="red4", bg="thistle3", anchor="w").place(relx=0.05, rely=0.25, relwidth=1, height=25)
-        self.text_roll = tk.Entry(self, font=("times new roman", 15))
-        self.text_roll.place(relx=0.05, rely=0.3, width=250, height=30)
-        tk.Label(self, text="Password", font=50, fg="red4", bg="thistle3", anchor="w").place(relx=0.05, rely=0.35, relwidth=1, height=25)
-        self.text_passwd = tk.Entry(self, font=("times new roman", 15))
-        self.text_passwd.place(relx=0.05, rely=0.4, width=250, height=30)
-        tk.Label(self, text="Whatsapp Number", font=50, fg="red4", bg="thistle3", anchor="w").place(relx=0.05, rely=0.45, relwidth=1, height=25)
-        self.text_number = tk.Entry(self, font=("times new roman", 15))
-        self.text_number.place(relx=0.05, rely=0.5, width=250, height=30)
-        reg_btn = tk.Button(self, text="Register", bg="dark green", fg="white", command=lambda: self.add_user(controller, self.text_name.get(), self.text_roll.get(), self.text_passwd.get(), self.text_number.get())).place(relx=0.05, rely=0.6, width=100, height=25)
-
-    def add_user(self, controller, username, roll, password, whatsapp):
-        cur.execute("SELECT * FROM users WHERE username=(?);", (username,))
-        check = cur.fetchone()
-        if username == "" or roll == "" or password == "" or whatsapp =="":
-            tk.messagebox.showerror("Error", "All the fields are required")
-        elif check is not None:
-            tk.messagebox.showerror("Error", "Username {} already exists !!!".format(username))
-        else:
-            cur.execute("INSERT INTO users (username, roll, password, whatsapp) VALUES (?,?,?,?);", (username, roll, hashing(password), whatsapp))
-            tk.messagebox.showinfo("{} Succesfully Registered !!!".format(username))
-            controller.show_frame(login_page)
+            pass
+            #sys.exit("Invalid Input !!!")
+    except:
+        pass
+        #sys.exit("Invalid Login !!!")
 
 
-class display_quiz(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, width=850, height=550, bg="thistle3")
-        files = os.listdir("./quiz_wise_questions")
-        quiz_list = list()
-        tk.Label(self, text="select quiz", bg="steel blue", font=50, fg="red4", anchor="center", height=5).pack(side="top", expand=False, fill="both")
-        frame = tk.Frame(self, bg="thistle3")
-        frame.pack()
-        listNodes = tk.Listbox(frame, width=20, height=15, font=("Helvetica", 12), bg="forest green")
-        listNodes.pack(side="left", fill="y")
-
-        scrollbar = tk.Scrollbar(frame, orient="vertical")
-        scrollbar.config(command=listNodes.yview)
-        scrollbar.pack(side="right", fill="y")
-
-        listNodes.config(yscrollcommand=scrollbar.set)
-        for file in files:
-            quiz_list.append(file.split(".")[0])
-        for x in quiz_list:
-            listNodes.insert("end", x)
-
-        quiz_btn = tk.Button(self, text="Start Quiz", bg="dark green", fg="white", command=lambda: self.show(listNodes.get(listNodes.curselection()), quiz_list)).pack()
-        controller.show_frame(display_ques)
-
-    def show(self, quiz_name, quiz_list):
-        row_list = list()
-        if quiz_name not in quiz_list:
-            tk.messagebox.showerror("Invalid Quiz Name")
-        filename = quiz_name + ".csv"
-        df = pd.read_csv(os.path.join("./quiz_wise_questions", filename))
-        program_dict["rows"] = list()
-        for index, row in df.iterrows():
-            row_list.append(row)
-            ans_dict[row["ques_no"]] = 0
-            if row["compulsory"] == "y":
-                ans_dict[row["ques_no"]] = row["marks_wrong_ans"]
-        program_dict["rows"] = row_list
-        program_dict["row_length"] = len(list(df["ques_no"]))
-        program_dict["row"] = 0
-
-class display_ques(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, width=850, height=550, bg="thistle3")
-
-
-app = main()
-manager = mp.Manager()
-global program_dict
-global ans_dict
-global marks_dict
-program_dict = manager.dict()
-ans_dict = manager.dict()
-marks_dict = manager.dict()
-app.mainloop()
