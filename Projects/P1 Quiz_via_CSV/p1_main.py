@@ -32,6 +32,27 @@ def goto():
     temp = int(input("Enter the question number to go : "))
     ques_no = temp-1
 
+def to_submit():
+    global submit, timing
+    temp = input("Do you want to do final submit (yes/no) : ")
+    temp.lower()
+    if temp=="yes":
+        submit = True
+        timing.terminate()
+
+def export_db():
+    conn = sqlite3.connect('./project1_quiz_cs384.db', isolation_level=None,detect_types=sqlite3.PARSE_COLNAMES)
+    db_df = pd.read_sql_query("SELECT * FROM marks", conn)
+    db_df.to_csv('./quiz_wise_responses/database.csv', index=False)
+    temp = pd.read_csv('./quiz_wise_responses/database.csv')
+    q_li = list(temp["quiz_num"].unique())
+    basepath = "./quiz_wise_responses"
+    for qu in q_li:
+        filename = "scores_q"+str(int(qu))+".csv"
+        temp_df = temp[temp["quiz_num"] == qu]
+        temp_df.to_csv(os.path.join(basepath,filename),mode="a+",index=False)
+
+
 def db_entry():
     global user_roll, quiz_num, total_score
     temp_con = sqlite3.connect('project1_quiz_cs384.db')
@@ -147,7 +168,6 @@ def display_and_get_ans():
             wrong = wrong+1
     db_entry()
     individual()
-
 
 def clear():
     if os.name == "nt":
@@ -268,8 +288,11 @@ def register():
         print("{} completed registration successfuly".format(user))
         login()
 
+
 kb.add_hotkey("ctrl + alt + u", unattempted_ques)
 kb.add_hotkey("ctrl + alt + g", goto)
+kb.add_hotkey("ctrl + alt + f", to_submit)
+kb.add_hotkey("ctrl + alt + e", export_db)
 
 if __name__ == '__main__':
 
