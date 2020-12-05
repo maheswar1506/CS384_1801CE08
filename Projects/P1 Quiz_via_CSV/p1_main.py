@@ -65,7 +65,8 @@ def individual():
     basepath = "./individual_responses"
     filename = quiz_name + "_" + user_roll+".csv"
     temp = df.copy()
-    li= pd.DataFrame({"marked_choice":[user_choices]})
+    temp = temp[['ques_no','question','option1','option2','option3','option4','correct_option','marks_correct_ans','marks_wrong_ans','compulsory']]
+    li= pd.DataFrame({"marked_choice":user_choices})
     l1 = pd.DataFrame({"Total":[correct, wrong,(row_length-attempted),total_score, temp["marks_correct_ans"].sum()]})
     l2 = pd.DataFrame({"Legend":["Correct Choices", "Wrong Choices", "Unattempted","Marks Obtained", "Total Quiz Marks"]})
     temp = pd.concat([temp, li, l1, l2], axis=1)
