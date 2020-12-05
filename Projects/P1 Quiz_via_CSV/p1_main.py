@@ -136,7 +136,7 @@ def display_and_get_ans():
             comp = "Yes"
         elif row["compulsory"] == "n":
             comp = "No"
-        print("Is Compulsory: ".format(comp))
+        print("Is Compulsory: {}".format(comp))
         print("\n")
         print("Enter your choice as per given choices : ")
         choice = input("Enter Choice: 1, 2, 3, 4, S : ")
@@ -169,6 +169,7 @@ def display_and_get_ans():
             wrong = wrong+1
     db_entry()
     individual()
+# comment epxort_db to get result when pressing Ctrl + Alt + E
     export_db()
 
 def clear():
