@@ -21,6 +21,16 @@ if(os.path.exists("./project1_quiz_cs384.db")):
 else:
     pass
 
+def unattempted_ques():
+    global user_choices
+    un_li = list()
+    un_li = [int(i)+1 for i in range(len(user_choices)) if (user_choices[i])==-1]
+    print("\nunattempted_ques : ", *un_li)
+
+def goto():
+    global ques_no
+    temp = int(input("Enter the question number to go : "))
+    ques_no = temp-1
 
 def db_entry():
     global user_roll, quiz_num, total_score
@@ -258,6 +268,8 @@ def register():
         print("{} completed registration successfuly".format(user))
         login()
 
+kb.add_hotkey("ctrl + alt + u", unattempted_ques)
+kb.add_hotkey("ctrl + alt + g", goto)
 
 if __name__ == '__main__':
 
