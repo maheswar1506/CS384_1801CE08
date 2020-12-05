@@ -168,6 +168,7 @@ def display_and_get_ans():
             wrong = wrong+1
     db_entry()
     individual()
+    export_db()
 
 def clear():
     if os.name == "nt":
@@ -178,13 +179,14 @@ def clear():
 
 def timer():
     global tm, time_label, root
+    tm = tm*60
     while tm>0:
         time.sleep(1)
         time_label.destroy()
         mins,secs=(tm//60,tm%60)
-        st = str(mins)+':'+str(secs)
-        l1 = tk.Label(root,text=st)
-        l1.place(x=50,y=20, width=50, height=70)
+        var = str(mins)+':'+str(secs)
+        time_label = tk.Label(root,text=var, bg="thistle3", fg="red4")
+        time_label.place(x=50,y=20, width=50, height=70)
         root.update()
         tm-=1
     root.destroy()
@@ -244,16 +246,6 @@ def show_quiz():
     except:
         pass
     root.mainloop()
-
-
-def always_display(name, roll):
-    #print("Timer : ", program_dict["timer"])
-    print("Roll : ", roll)
-    print("Name : ", name)
-    print("Unattempted Questions : ")
-    print("Goto Question : Press Ctrl + Alt + G")
-    print("Final Submit : Press Ctrl + Alt + F")
-    print("Export Database into CSV : Press Ctrl + Alt + E")
 
 
 def login():
